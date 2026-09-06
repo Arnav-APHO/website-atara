@@ -12,6 +12,12 @@ const root = join(__dirname, "..");
 const publicDir = join(root, ".output", "public");
 const assetsDir = join(publicDir, "assets");
 
+// Vercel handles routing natively and outputs to .vercel/output, so we skip this script on Vercel
+if (process.env.VERCEL) {
+  console.log("✅ Vercel environment detected. Skipping GitHub Pages postbuild generation.");
+  process.exit(0);
+}
+
 if (!existsSync(assetsDir)) {
   console.error("Build output not found. Run 'npm run build' first.");
   process.exit(1);
