@@ -40,11 +40,15 @@ function ContactPage() {
     }
     setSending(true);
     try {
-      await sendContactEmail({ data: form });
-      toast.success("Message sent! We'll reply to " + form.email);
-      setForm({ name: "", email: "", subject: "", message: "" });
-    } catch {
-      toast.error("Something went wrong. Please email us directly at atara.wgs@gmail.com");
+      const result = await sendContactEmail({ data: form });
+      if (result && !result.success) {
+        toast.error(`Email Error: ${result.error || "Unknown"}`);
+      } else {
+        toast.success("Message sent! We'll reply to " + form.email);
+        setForm({ name: "", email: "", subject: "", message: "" });
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong sending the email");
     }
     setSending(false);
   }

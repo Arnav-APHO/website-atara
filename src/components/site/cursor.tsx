@@ -125,7 +125,7 @@ export function CustomCursor() {
       const target = document.elementFromPoint(pointerX, pointerY);
       const nextCardElement =
         target instanceof Element ? target.closest("[data-cursor-card]") : null;
-      const nextLinkElement = target instanceof Element ? target.closest("a[href]") : null;
+      const nextLinkElement = target instanceof Element ? target.closest("a[href], button, [role='button'], label, input, select, textarea, [tabindex]:not([tabindex='-1'])") : null;
       const nextActive = Boolean(nextLinkElement);
 
       const isInput =
