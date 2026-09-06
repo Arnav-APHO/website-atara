@@ -236,6 +236,13 @@ export function CustomCursor() {
       }
     };
 
+    // Cache DOM state to prevent CSS transition freezing
+    let lastRingW = -1;
+    let lastRingH = -1;
+    let lastIsText = false;
+    let lastInScrollMode = false;
+    let lastActive = false;
+
     // Use a separate tick for auto-scrolling
     const scrollTick = () => {
       if (scrollState.active) {
@@ -257,6 +264,8 @@ export function CustomCursor() {
       scrollTick();
       syncCursorSurface();
       const isText = textActiveRef.current;
+      const inScrollMode = scrollState.active;
+      const isActive = activeRef.current;
 
       ringX += (x - ringX) * 0.18;
       ringY += (y - ringY) * 0.18;
@@ -270,16 +279,26 @@ export function CustomCursor() {
       const scaleY = 1 - speed / 300;
       const tilt = Math.max(-25, Math.min(25, velocityX * 1.2));
 
-      // Don't show ring/dot while in scroll mode
-      const inScrollMode = scrollState.active;
-
       if (ringRef.current) {
-        const ringW = inScrollMode ? 0 : isText ? 2 : activeRef.current ? 62 : 34;
-        const ringH = inScrollMode ? 0 : isText ? 28 : activeRef.current ? 62 : 34;
-        ringRef.current.style.display = inScrollMode || isText ? "none" : "block";
-        ringRef.current.style.width = ringW + "px";
-        ringRef.current.style.height = ringH + "px";
-        ringRef.current.style.borderRadius = isText ? "2px" : "";
+        const ringW = inScrollMode ? 0 : isText ? 2 : isActive ? 62 : 34;
+        const ringH = inScrollMode ? 0 : isText ? 28 : isActive ? 62 : 34;
+
+        // ONLY update dimensions if they changed, otherwise CSS transitions freeze!
+        if (ringW !== lastRingW || ringH !== lastRingH) {
+          ringRef.current.style.width = ringW + "px";
+          ringRef.current.style.height = ringH + "px";
+          lastRingW = ringW;
+          lastRingH = ringH;
+        }
+
+        if (isText !== lastIsText || inScrollMode !== lastInScrollMode || isActive !== lastActive) {
+          ringRef.current.style.display = inScrollMode || isText ? "none" : "block";
+          ringRef.current.style.borderRadius = isText ? "2px" : "50%";
+          lastIsText = isText;
+          lastInScrollMode = inScrollMode;
+          lastActive = isActive;
+        }
+
         ringRef.current.style.transform =
           `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%) ` +
           (isText ? "" : `rotate(${angle}deg) rotateY(${tilt}deg) rotateX(${-velocityY * 1.2}deg) `) +
@@ -287,7 +306,7 @@ export function CustomCursor() {
       }
 
       // Constrain the dot to never leave the ring
-      const constrainRingRadius = activeRef.current ? 31 : 17;
+      const constrainRingRadius = isActive ? 31 : 17;
       const constrainDotRadius = 4;
       const maxDist = constrainRingRadius - constrainDotRadius;
       const dx = x - ringX;
@@ -304,12 +323,20 @@ export function CustomCursor() {
       }
 
       if (dotRef.current) {
-        dotRef.current.style.display = inScrollMode || isText ? "none" : "block";
+        const shouldShowDot = !(inScrollMode || isText);
+        if (dotRef.current.dataset.visible !== String(shouldShowDot)) {
+          dotRef.current.style.display = shouldShowDot ? "block" : "none";
+          dotRef.current.dataset.visible = String(shouldShowDot);
+        }
         dotRef.current.style.transform = `translate3d(${dotX}px, ${dotY}px, 0) translate(-50%, -50%)`;
       }
 
       if (textBarRef.current) {
-        textBarRef.current.style.display = inScrollMode ? "none" : isText ? "block" : "none";
+        const shouldShowText = !inScrollMode && isText;
+        if (textBarRef.current.dataset.visible !== String(shouldShowText)) {
+          textBarRef.current.style.display = shouldShowText ? "block" : "none";
+          textBarRef.current.dataset.visible = String(shouldShowText);
+        }
         textBarRef.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
       }
       rafId = requestAnimationFrame(frame);
