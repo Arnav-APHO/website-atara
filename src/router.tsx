@@ -9,7 +9,6 @@ export const getRouter = () => {
     routeTree,
     history: createHashHistory(),
     context: { queryClient },
-    defaultResetScroll: true,
     defaultPreloadStaleTime: 0,
   });
 

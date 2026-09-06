@@ -8,7 +8,12 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
   vite: {
-    base: "/atara-website/",
+    // base path should be '/' for Vercel, '/atara-website/' for GH Pages
+    base: process.env.VERCEL ? "/" : "/atara-website/",
+    build: {
+      target: "es2015",
+      cssTarget: "chrome61",
+    },
   },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).

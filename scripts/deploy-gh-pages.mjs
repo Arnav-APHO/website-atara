@@ -27,7 +27,7 @@ if (!entryJs) {
   process.exit(1);
 }
 
-const base = "/atara-website/";
+const base = process.env.VERCEL ? "/" : "/atara-website/";
 
 const html = `<!DOCTYPE html>
 <html lang="en">

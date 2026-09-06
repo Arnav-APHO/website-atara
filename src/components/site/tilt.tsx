@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, type ReactNode, type PointerEvent } from "react";
+import { useRef, useEffect, type ReactNode, type PointerEvent as ReactPointerEvent } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useReducedMotion } from "@/hooks/use-hydrated";
 
@@ -25,7 +25,7 @@ export function Tilt({
 
   const maxAngle = 18; // degrees
 
-  function onMove(e: PointerEvent<HTMLDivElement>) {
+  function onMove(e: ReactPointerEvent<HTMLDivElement>) {
     if (reduced || !ref.current) return;
     // store the latest mouse coords and schedule a RAF to update motion values
     const target = e.currentTarget as HTMLDivElement;

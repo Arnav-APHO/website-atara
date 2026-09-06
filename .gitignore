@@ -40,3 +40,4 @@ Team Position/
 
 # Raw WhatsApp media (not used directly by the site)
 src/assets/images/ATARA Photos & Videos/
+.vercel/
