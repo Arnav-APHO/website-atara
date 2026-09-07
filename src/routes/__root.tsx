@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { SiteChrome } from "../components/site/site-chrome";
+import heroImg from "@/assets/hero-botanical.jpg";
 
 function NotFoundComponent() {
   return (
@@ -92,6 +93,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", href: `${import.meta.env.BASE_URL}atara-logo.png`, type: "image/png" },
       { rel: "apple-touch-icon", href: `${import.meta.env.BASE_URL}atara-logo.png` },
+      { rel: "preload", as: "image", href: heroImg, fetchPriority: "high" },
       { rel: "sitemap", type: "application/xml", href: `${import.meta.env.BASE_URL}sitemap.xml` },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },

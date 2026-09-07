@@ -10,8 +10,7 @@ export function Preloader() {
       setDone(true);
       return;
     }
-    const t = setTimeout(() => setDone(true), 1400);
-    return () => clearTimeout(t);
+    setDone(true);
   }, []);
   return (
     <AnimatePresence>
@@ -19,9 +18,9 @@ export function Preloader() {
         <motion.div
           key="preloader"
           initial={{ opacity: 1 }}
-          exit={{ y: "-100%" }}
-          transition={{ duration: 0.9, ease: [0.77, 0, 0.175, 1] }}
-          className="preloader-container fixed inset-0 z-[200] flex flex-col items-center justify-center bg-forest text-cream"
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="preloader-container fixed inset-0 z-[200] flex flex-col items-center justify-center bg-forest text-cream pointer-events-none"
         >
           <motion.div
             initial={{ scale: 0.6, opacity: 0, rotate: -8 }}
