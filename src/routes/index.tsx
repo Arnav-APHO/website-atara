@@ -68,10 +68,11 @@ function Hero() {
       <motion.div style={{ y, scale }} className="absolute inset-0">
         <img
           src={heroImg}
-          alt=""
+          alt="Atara hero botanical background"
           className="h-full w-full object-cover"
           width={1920}
           height={1280}
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/30 to-ink/85" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink/50 via-transparent to-transparent" />

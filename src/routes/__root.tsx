@@ -91,6 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: appCss,
       },
       { rel: "icon", href: `${import.meta.env.BASE_URL}atara-logo.png`, type: "image/png" },
+      { rel: "apple-touch-icon", href: `${import.meta.env.BASE_URL}atara-logo.png` },
       { rel: "sitemap", type: "application/xml", href: `${import.meta.env.BASE_URL}sitemap.xml` },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
@@ -110,6 +111,7 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <title>Atara — Inspire With Impact</title>
         <HeadContent />
       </head>
       <body>
