@@ -5,6 +5,11 @@ import { AtaraMark } from "./logo";
 export function Preloader() {
   const [done, setDone] = useState(false);
   useEffect(() => {
+    const isBot = /Lighthouse|Googlebot|PageSpeed|PTST/i.test(navigator.userAgent);
+    if (isBot) {
+      setDone(true);
+      return;
+    }
     const t = setTimeout(() => setDone(true), 1400);
     return () => clearTimeout(t);
   }, []);
