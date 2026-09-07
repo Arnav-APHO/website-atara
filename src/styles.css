@@ -168,10 +168,6 @@
     outline: 2px solid var(--leaf);
     outline-offset: 4px;
   }
-
-  html.is-bot .preloader-container {
-    display: none !important;
-  }
 }
 
 @utility text-balance {

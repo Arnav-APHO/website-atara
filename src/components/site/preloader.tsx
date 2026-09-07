@@ -5,12 +5,6 @@ import { AtaraMark } from "./logo";
 export function Preloader() {
   const [done, setDone] = useState(false);
   useEffect(() => {
-    // If we want to skip for some bots, we can try, but preserve it for normal users
-    const isBot = /Lighthouse|Googlebot|PageSpeed|PTST/i.test(navigator.userAgent);
-    if (isBot) {
-      setDone(true);
-      return;
-    }
     const t = setTimeout(() => setDone(true), 1400);
     return () => clearTimeout(t);
   }, []);
